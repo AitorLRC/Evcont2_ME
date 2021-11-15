@@ -1,0 +1,92 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{float}
+%\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\usepackage{geometry}
+\geometry{ a4paper, total={185mm,265mm}}
+\usepackage{multicol}
+\usepackage{lscape}
+\usepackage{physics}
+\usepackage{subfig}
+\usepackage{hyperref}
+
+\usepackage{wrapfig}
+\usepackage{xcolor}
+\usepackage{listings}
+
+\hypersetup{
+   colorlinks=true,
+   urlcolor=blue,
+   linkcolor=blue,
+   citecolor=blue,
+   %filecolor=magenta,
+}
+
+\definecolor{mygray}{RGB}{250, 249, 227}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\lstdefinestyle{mystyle}{
+  backgroundcolor=\color{mygray},   commentstyle=\color{codegreen},
+  keywordstyle=\color{blue},
+  numberstyle=\tiny\color{gray},
+  stringstyle=\color{purple},
+  basicstyle=\ttfamily\footnotesize,
+  breakatwhitespace=false,         
+  breaklines=true,                 
+  captionpos=b,                    
+  keepspaces=true,                 
+  numbers=left,                    
+  numbersep=5pt,                  
+  showspaces=false,                
+  showstringspaces=false,
+  showtabs=false,                  
+  tabsize=2
+}
+%"mystyle" code listing set
+\lstset{style=mystyle}
+
+
+\title{PL2: Análisis de datos y regresión}
+\author{Aitor Lorenzo Ramírez Cabrera}
+\date{Octubre 2021}
+
+\begin{document}
+
+\begin{center}
+    \textbf{MODELIZACIÓN ESTADÍSTICA 2021-2022\\ Máster en modelización e investigación matemática, estadística y computación\\[3mm] Evaluación continua 2}\\[1mm] \textsc{Aitor Lorenzo Ramírez Cabrera} \\[1mm]
+\end{center}
+
+\section{Teoría: Define los siguientes conceptos estadísticos y explica su significado}
+
+\begin{itemize}
+    \item \textbf{Puntuación tipificada:} Se utiliza para comparar las posiciones relativas de varios elementos con respecto al conjunto de observaciones. Una puntuación tipificada se puede calcular como:
+    \begin{equation}
+        z_i = \frac{x_i - \Bar{X}}{s}
+    \end{equation}
+    donde $\Bar{X}$ es la media de las observaciones y $s$ la desviación estándar. Como podemos observar, $z_i$ no es más que el número de desviaciones estándar que $x_i$ se desvía de la media. La puntuación tipificada es útil para comparar datos procedente de diferentes muestras.
+    %si tal añadir algo de las propiedades
+    
+    \item \textbf{Coeficiente de correlación de Pearson:} Es una prueba que mide la dependencia lineal entre dos variables cuantitativas continuas.\\ Este puede tomar valores en un rango $[-1,1]$, siendo 0 la prueba de que no hay asociación entre las variables. Un valor mayor que cero indica una asociación positiva, esto es, a medida que aumenta una variable también lo hace la otra. Por otra parte, un valor menor que cero indica una asociación negativa, esto es, a medida que aumenta una variable la otra disminuye.\\
+    Para una población, dado un par de variables aleatorias $(X,Y)$ se define como:
+    \begin{equation}
+        \rho_{X,Y} = \frac{Cov(X,Y)}{\sqrt{Var(X) Var(Y)}}
+    \end{equation}
+    Mientras que, para una muestra dada por n pares de datos $\{(x_i, y_i)\}^n_{i=1}$ se define como:
+\begin{equation}
+    r_{xy} = \frac{\sum_{i=1}^n(x_i-\Bar{x})(y_i-\Bar{y})}{\sqrt{\sum_{i=1}^n(x_i-\Bar{x})^2}\sqrt{\sum_{i=1}^n(y_i-\Bar{y})^2}}
+\end{equation}
+    
+    \item \textbf{Intervalo de confianza:} 
+    
+    \item \textbf{Región crítica de un test:}
+    
+    \item \textbf{p-valor del contraste:}
+    
+    \item \textbf{Regresión logística:}
+\end{itemize}
+
+\end{document}
