@@ -82,11 +82,19 @@
     
     \item \textbf{Intervalo de confianza:} Es un par de números entre los cuales se encontrará la estimación puntual buscada. El intervalo de confianza nos permite calcular dos valores alrededor de una media muestral que acoten un rango dentro del cual se va a localizar el parámetro poblacional.
     
-    \item \textbf{Región crítica de un test:}
+    \item \textbf{Región crítica de un test:} La región crítica a un nivel de significación $\alpha$ representa el subconjunto del espacio muestral tal que la probabilidad de que la muestra aleatoria simple pertenezca a esta. Cuando se cumple la hipótesis nula, $H_0$, esta es igual a $\alpha$, es decir:
+    \begin{equation}
+        Pr((\xi_1, \xi_2, ..., \xi_n)\in C|H_0) = \alpha
+    \end{equation}
+    La regla de decisión en un test quedará definida de acuerdo a una región crítica. Si la muestra obtenida se ubica dentro de la región crítica, rechazamos la hipótesis nula $H_0$. En caso contrario, no rechazamos la hipótesis nula.
     
-    \item \textbf{p-valor del contraste:}
+    \item \textbf{p-valor del contraste:} Es la probabilidad de obtener un valor del estadístico al menos tan extremo como el que se ha observado si la hipótesis nula es cierta. Se puede decir que representa la probabilidad de observar la muestra cuando la hipótesis nula es cierta.\\
+    Si el p-valor es muy pequeño ($p < 0.05$) la muestra es poco compatible con que $H_0$ sea cierta y se rechaza $H_0$.\\
+    Si el p-valor no es pequeño ($p \geq 0.05$), la muestra es compatible con que $H_0$ sea cierta y no se rechaza.
     
     \item \textbf{Regresión logística:}
+    
+    
 \end{itemize}
 
 \end{document}
