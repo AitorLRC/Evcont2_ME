@@ -44,10 +44,13 @@ summary(reg)
 
 
 
-#La multicolinealidad
-
-
-
+#Multicolinealidad: relación de dependencia lineal fuerte entre más de dos variables explicativas de una regresión múltiple
+#Vamos a suponer multicolienalidad entre x1 y x2
+set.seed(16); x2.2 <- 2*x1 + rnorm(n, mean = 0, sd = 1) #Defino x2 como x1 más una variable aleatoria
+cor(x1, x2.2) #Veo que la correlación es alta, por lo tanto, hay multicolinealidad
+#Hacemos la regresión para este caso
+reg <- lm(y~x1+x2.2+x3)
+summary(reg)
 
 
 

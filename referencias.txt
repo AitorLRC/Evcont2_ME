@@ -29,3 +29,5 @@ http://humanidades.cchs.csic.es/cchs/web_UAE/tutoriales/PDF/Regresion_lineal_mul
 https://ichi.pro/es/la-historia-de-los-valores-atipicos-apalancamiento-y-punto-de-influencia-en-la-regresion-lineal-54226095743491
 http://halweb.uc3m.es/esp/Personal/personas/jmmarin/esp/GuiaSPSS/18reglin.pdf
 
+-Multicolinealidad
+https://economipedia.com/definiciones/multicolinealidad.html
