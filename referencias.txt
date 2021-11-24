@@ -31,3 +31,6 @@ http://halweb.uc3m.es/esp/Personal/personas/jmmarin/esp/GuiaSPSS/18reglin.pdf
 
 -Multicolinealidad
 https://economipedia.com/definiciones/multicolinealidad.html
+
+-Especificación inadecuada
+https://ocw.ehu.eus/pluginfile.php/54411/mod_resource/content/1/estadistica/tema-5-especificacion-inadecuada-del-modelo.pdf

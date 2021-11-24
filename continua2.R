@@ -6,7 +6,15 @@
 n <- 40 #Número de muestras
 
 set.seed(1); x1 <- rnorm(n)
-set.seed(13); x2 <- rnorm(n)
+#Para generar la segunda variable con correlación de poisson >0.1 creo la función
+corr.data<- function(x1, rho){
+  set.seed(7);xr <- rnorm(length(x1)) #Genero una variable random con distribución normal
+  
+  xcorr<- rho*x1 + sqrt(1-rho^2)*xr #Genero la variable correlada
+  
+  return(xcorr)
+}
+x2 <- corr.data(x1, 0.2)
 set.seed(2); x3 <- rnorm(n)
 cor(x1,x2)
 
@@ -21,8 +29,8 @@ residuales = rnorm(n, 0, sigma)
 y <- beta0 + beta1*x1 + beta2*x2 + beta3*x3 + residuales
 
 #Creo el modelo de regresión 
-reg <- lm(y~x1+x2+x3)
-summary(reg) #Vemos que en todos los casos las betas son parecidas a las que hemos definidos y los p-valores las consideran significativas
+reg1 <- lm(y~x1+x2+x3)
+summary(reg1) #Vemos que en todos los casos las betas son parecidas a las que hemos definidos y los p-valores las consideran significativas
 
 
 #Si se añade un punto de influencia
@@ -31,16 +39,16 @@ x1.1 <- x1
 x1.1[5] <- x1[5]+15
 plot(x1.1, y)
 #Hacemos la regresión para este caso
-reg <- lm(y~x1.1+x2+x3)
-summary(reg)
+reg2 <- lm(y~x1.1+x2+x3)
+summary(reg2)
 
 #Al punto con el beta mayor
 x2.1 <- x2
 x2.1[5] <- x2[5]+20
 plot(x2.1, y)
 #Hacemos la regresión para este caso
-reg <- lm(y~x1+x2.1+x3)
-summary(reg)
+reg3 <- lm(y~x1+x2.1+x3)
+summary(reg3)
 
 
 
@@ -51,6 +59,21 @@ cor(x1, x2.2) #Veo que la correlación es alta, por lo tanto, hay multicolinealid
 #Hacemos la regresión para este caso
 reg <- lm(y~x1+x2.2+x3)
 summary(reg)
+
+
+#Especificación inadecuada del modelo
+#Una posible causa de la especificación inadecuada del modelo puede se devida a la omisión de regresores relevante
+reg4 <- lm(y~x1+x2)  #Quitamos la tercera que tenía un p-valor muy pequeño
+summary(reg4)  #Vemos que los p aumentan y el valor de beta varía
+
+reg5 <- lm(y~x2+x3)
+summary(reg5)
+
+#Pruebo a quitar valores de x2
+reg6 <- lm(y~x2+x3)
+summary(reg6)
+
+
 
 
 
