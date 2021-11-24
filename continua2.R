@@ -78,7 +78,6 @@ summary(reg6)
 
 
 
-
 ##################
 #Segundo ejercicio
 ##################
