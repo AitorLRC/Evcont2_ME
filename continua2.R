@@ -1,0 +1,89 @@
+
+#################
+#Primer ejercicio
+#################
+
+n <- 40 #Número de muestras
+
+set.seed(1); x1 <- rnorm(n)
+set.seed(13); x2 <- rnorm(n)
+set.seed(2); x3 <- rnorm(n)
+cor(x1,x2)
+
+#Defino los coeficientes de la regresión
+beta0 <- 10; beta1 <- 5; beta2 <- 23; beta3 <- 15
+
+#Defino los residuales
+sigma <- 4
+residuales = rnorm(n, 0, sigma)
+
+#Calculo la variable respuesta 
+y <- beta0 + beta1*x1 + beta2*x2 + beta3*x3 + residuales
+
+#Creo el modelo de regresión 
+reg <- lm(y~x1+x2+x3)
+summary(reg) #Vemos que en todos los casos las betas son parecidas a las que hemos definidos y los p-valores las consideran significativas
+
+
+#Si se añade un punto de influencia
+#Al punto con el beta menor
+x1.1 <- x1
+x1.1[5] <- x1[5]+15
+plot(x1.1, y)
+#Hacemos la regresión para este caso
+reg <- lm(y~x1.1+x2+x3)
+summary(reg)
+
+#Al punto con el beta mayor
+x2.1 <- x2
+x2.1[5] <- x2[5]+20
+plot(x2.1, y)
+#Hacemos la regresión para este caso
+reg <- lm(y~x1+x2.1+x3)
+summary(reg)
+
+
+
+#La multicolinealidad
+
+
+
+
+
+
+
+
+##################
+#Segundo ejercicio
+##################
+
+n <- 30 #Número de muestras
+
+#Por la forma que tiene la función logit sabemos que la probabilidad abarca el rango [0,1] cuando logit se encuentra en el intervalo [-5,5]
+set.seed(10);logit <- rnorm(n, mean = 0, sd = 3)
+
+#Defino los coeficientes de la regresión
+beta0 <- 5; beta1 <- 3; beta2 <- 2; beta3 <- 3
+
+#Defino la variable cualitativa con dos modalidades
+set.seed(15); x1 <- sample(c("s", "n"), n, replace=TRUE)
+
+#Para definir la variable cuantítativa hago uso del logit: logit = beta0 + beta*x1s + beta*x1n + beta3*x2
+x2<- (logit - beta0 - beta1*as.numeric(x1=='s') - beta2*as.numeric(x1=='n'))/beta3
+
+#Los residuales se comportan como una distribución normal con media cero y desviación típica sigma
+sigma <- 0.8
+residuales <- round(rnorm(n, 0, sigma), 1) #Los redondeo a un decimal
+
+#Calculo el logit
+logit_aleatorio <- beta0 + beta1*as.numeric(x1=='s') + beta2*as.numeric(x1=='n') + beta3*x2 + residuales
+
+#Calulo la probabilidad
+p <- 1/(1+exp(-logit_aleatorio))
+
+#Simulo las variables respuesta según una distribución binomial dependiente de x
+y <- rbinom(n, 1, prob = p )
+
+#Estimo el modelo a partir de los parámetros simulados
+modelo <- glm(y~x1+x2, family = binomial)
+summary(modelo)

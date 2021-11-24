@@ -1,0 +1,31 @@
+-Puntuación tipificada:
+https://economipedia.com/definiciones/puntuacion-estandar-o-tipificada.html
+https://es.wikipedia.org/wiki/Unidad_tipificada
+
+-Coeficiente de correlación de Pearson:
+https://www.questionpro.com/blog/es/coeficiente-de-correlacion-de-pearson/
+https://es.wikipedia.org/wiki/Coeficiente_de_correlaci%C3%B3n_de_Pearson
+
+-Intervalo de confianza
+https://economipedia.com/definiciones/intervalo-de-confianza.html
+https://es.wikipedia.org/wiki/Intervalo_de_confianza
+
+-Región crítica de un test
+https://torres.epv.uniovi.es/centon/contraste-region-critica.html
+http://www.juntadeandalucia.es/averroes/centros-tic/14002996/helvia/aula/archivos/repositorio/250/295/html/estadistica/hipotesis.htm
+
+-p-valor del contraste
+Lo saqué de los apuntes de series temporales
+
+
+-Variables con correlación definida
+https://www.icesi.edu.co/blogs/usando_r/2012/05/29/generar-una-muestra-aleatoria-con-correlacion/
+
+-Regresión logística
+https://rstudio-pubs-static.s3.amazonaws.com/230815_9528c988d5794fbd9c1cb186e383c74a.html
+
+-Punto de influencia
+http://humanidades.cchs.csic.es/cchs/web_UAE/tutoriales/PDF/Regresion_lineal_multiple_3.pdf
+https://ichi.pro/es/la-historia-de-los-valores-atipicos-apalancamiento-y-punto-de-influencia-en-la-regresion-lineal-54226095743491
+http://halweb.uc3m.es/esp/Personal/personas/jmmarin/esp/GuiaSPSS/18reglin.pdf
+
