@@ -227,5 +227,28 @@ La multicolinealidad es la alta correlación entre dos variables explicativas de
 \begin{equation*}
     x_{2.2} = 2x_1 + N(0,1)
 \end{equation*}
+Los resultados obtenidos para la regresión en este caso fueron:
+\begin{lstlisting}[language=R, caption = Regresión lineal con multicolinealidad, label =cod:5]
+> summary(reg4)
 
+Call:
+lm(formula = y ~ x1 + x2.2 + x3)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-41.107 -16.572  -5.198  12.772  64.116 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  16.0409     4.0206   3.990 0.000311 ***
+x1           13.7511     8.9001   1.545 0.131081    
+x2.2         -0.9659     4.5815  -0.211 0.834215    
+x3           13.5471     3.6409   3.721 0.000675 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 24.7 on 36 degrees of freedom
+Multiple R-squared:  0.407,	Adjusted R-squared:  0.3576 
+F-statistic: 8.235 on 3 and 36 DF,  p-value: 0.000266
+\end{lstlisting}
 \end{document}
