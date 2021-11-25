@@ -44,10 +44,26 @@
   showspaces=false,                
   showstringspaces=false,
   showtabs=false,                  
-  tabsize=2
+  tabsize=2,
 }
 %"mystyle" code listing set
-\lstset{style=mystyle}
+\lstset{style=mystyle,
+    inputencoding=utf8,
+    literate      =        % Support additional characters
+      {á}{{\'a}}1  {é}{{\'e}}1  {í}{{\'i}}1 {ó}{{\'o}}1  {ú}{{\'u}}1
+      {Á}{{\'A}}1  {É}{{\'E}}1  {Í}{{\'I}}1 {Ó}{{\'O}}1  {Ú}{{\'U}}1
+      {à}{{\`a}}1  {è}{{\`e}}1  {ì}{{\`i}}1 {ò}{{\`o}}1  {ù}{{\`u}}1
+      {À}{{\`A}}1  {È}{{\'E}}1  {Ì}{{\`I}}1 {Ò}{{\`O}}1  {Ù}{{\`U}}1
+      {ä}{{\"a}}1  {ë}{{\"e}}1  {ï}{{\"i}}1 {ö}{{\"o}}1  {ü}{{\"u}}1
+      {Ä}{{\"A}}1  {Ë}{{\"E}}1  {Ï}{{\"I}}1 {Ö}{{\"O}}1  {Ü}{{\"U}}1
+      {â}{{\^a}}1  {ê}{{\^e}}1  {î}{{\^i}}1 {ô}{{\^o}}1  {û}{{\^u}}1
+      {Â}{{\^A}}1  {Ê}{{\^E}}1  {Î}{{\^I}}1 {Ô}{{\^O}}1  {Û}{{\^U}}1
+      {œ}{{\oe}}1  {Œ}{{\OE}}1  {æ}{{\ae}}1 {Æ}{{\AE}}1  {ß}{{\ss}}1
+      {ç}{{\c c}}1 {Ç}{{\c C}}1 {ø}{{\o}}1  {Ø}{{\O}}1   {å}{{\r a}}1
+      {Å}{{\r A}}1 {ã}{{\~a}}1  {õ}{{\~o}}1 {Ã}{{\~A}}1  {Õ}{{\~O}}1
+      {ñ}{{\~n}}1  {Ñ}{{\~N}}1  {¿}{{?`}}1  {¡}{{!`}}1
+      {°}{{\textdegree}}1 {º}{{\textordmasculine}}1 {ª}{{\textordfeminine}}1
+    }
 
 
 \title{PL2: Análisis de datos y regresión}
@@ -98,5 +114,118 @@
 \end{itemize}
 
 \section{Simulación}
+\subsection{Analiza mediante simulación el efecto que producen los modelos de regresión diversos factores.}
+Para empezar, generamos las variables independientes de la simulación tal y como se muestra a continuación:
+\begin{lstlisting}[language=R, caption = Generación de variables independientes, label =cod:1]
+n <- 40 #Tamaño de muestra al menos de 3 observaciones
+
+set.seed(1); x1 <- rnorm(n) #Genero la variable aleatoria x1
+#Para generar la segunda variable con correlación de poisson >0.1 creo la función
+corr.data<- function(x1, rho){
+  set.seed(7);xr <- rnorm(length(x1)) #Variable random con distribución normal
+  
+  xcorr<- rho*x1 + sqrt(1-rho^2)*xr #Genero la variable correlada
+  
+  return(xcorr)
+}
+x2 <- corr.data(x1, 0.2) #Genero x2 con correlación 0.2 con respecto a x1
+set.seed(2); x3 <- rnorm(n) #Genero la variable aleatoria x3
+
+\end{lstlisting}
+A continuación, para calcular la variable dependiente defino unos valores cualesquiera para los $\beta$, unos residuales aleatorios de media nula y desviación típica $\sigma$ y aplico la fórmula de regresión lineal:
+\begin{equation}
+    y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_3 + res
+\end{equation}
+para el caso de estudio, los valores de $\beta$ elegidos son:
+\begin{equation*}
+    \beta_0 = 10 \ \ \ ;\ \ \ \beta_1 = 5 \ \ \ ;\ \ \ \beta_2 = 23 \ \ \ ;\ \ \  \beta_3 = 15
+\end{equation*}
+Ahora, teniendo la variable dependiente y las independientes, pasamos a crear el modelo de regresión lineal con la función \textit{lm()} de R de manera que obtenemos:
+\begin{lstlisting}[language=R, caption = Resultado de la regresión lineal, label =cod:2]
+> summary(reg1)
+
+Call:
+lm(formula = y ~ x1 + x2 + x3)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-9.3047 -3.2820 -0.5669  2.6613  9.3872 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)   9.9420     0.7825  12.706 7.20e-15 ***
+x1            5.2190     0.8972   5.817 1.22e-06 ***
+x2           22.8265     0.7461  30.596  < 2e-16 ***
+x3           14.3133     0.6934  20.641  < 2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 4.755 on 36 degrees of freedom
+Multiple R-squared:  0.978,	Adjusted R-squared:  0.9762 
+F-statistic: 533.7 on 3 and 36 DF,  p-value: < 2.2e-16
+\end{lstlisting}
+En \hyperref[cod:2]{Listing \ref{cod:2}} podemos observar que, como era de esperar, los valores de $\beta$ son similares a los que habíamos definido anteriormente. Además, en todos los casos el p-valor es mucho menor que $0.05$ por lo tanto rechazamos la hipótesis nula, es decir, rechazamos que alguno de estos $\beta$ sea nulo.
+
+Procedemos a analizar el efecto que producen en los modelos de regresión los siguientes factores:
+\subsubsection{Un punto de influencia}
+Para comprobar esto, sabemos que un punto de influencia es un valor atípico que afecta a la pendiente de la línea de regresión. Por lo tanto, podemos alterar alguno de los valores del cualquier variable independiente de manera que sea mucho mayor que el resto.
+
+Empezaremos comprobando que pasa si el punto se altera en la variable que tiene el menor $\beta$. En el caso de estudio se tomó la quinta componente de $x_1$ y se le sumó quince unidades para obtener un valor mucho mayor que el resto. Los resultados de la regresión obtenida en este caso fueron:
+\begin{lstlisting}[language=R, caption = Regresión lineal con un punto de influencia, label =cod:3]
+> summary(reg2)
+
+Call:
+lm(formula = y ~ x1.1 + x2 + x3)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-8.9560 -4.9148  0.0496  3.1637 14.5616 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)   9.6070     1.0415   9.224 5.14e-11 ***
+x1.1          0.8618     0.3888   2.216   0.0331 *  
+x2           24.0877     0.9464  25.452  < 2e-16 ***
+x3           14.8765     0.8957  16.609  < 2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 6.213 on 36 degrees of freedom
+Multiple R-squared:  0.9625,	Adjusted R-squared:  0.9593 
+F-statistic: 307.7 on 3 and 36 DF,  p-value: < 2.2e-16
+\end{lstlisting}
+Comparando los resultados obtenidos en \hyperref[cod:3]{Listing \ref{cod:3}} con los de \hyperref[cod:2]{Listing \ref{cod:2}} observamos que apenas hay diferencia en los valores de $\beta_0$, $\beta_2$ y $\beta_3$ (asociados a las variables que no han sido modificadas). Pero sí que hay gran diferencia entre las $\beta_1$ ya que vemos que esta pasa de ser $5.22$ a ser $0.86$. Además, se observa diferencia en el p-valor de esta última, que es mucho mayor, aunque seguimos rechazando la hipótesis de que $\beta_1$ pueda ser nula.
+
+A modo de curiosidad podemos comprobar que pasaría si el punto se altera en la variable que tiene el $\beta$ mayor. En el caso de estudio se tomó la quinta componente de $\beta_2$ y se le sumó veinte unidades. Los resultados de la regresión obtenida en este caso fueron:
+\begin{lstlisting}[language=R, caption = Regresión lineal con un punto de influencia, label =cod:4]
+> summary(reg3)
+
+Call:
+lm(formula = y ~ x1 + x2.1 + x3)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-45.536 -15.191  -4.421  12.978  62.121 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)   15.069      4.014   3.754 0.000613 ***
+x1            11.629      4.507   2.580 0.014107 *  
+x2.1           1.062      1.256   0.846 0.403396    
+x3            13.571      3.569   3.802 0.000534 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 24.47 on 36 degrees of freedom
+Multiple R-squared:  0.4178,	Adjusted R-squared:  0.3693 
+F-statistic: 8.612 on 3 and 36 DF,  p-value: 0.0001931
+\end{lstlisting}
+En este caso se observa que el efecto es mucho mayor ya que, para empezar, existe más error en el cálculo de los coeficientes de regresión $\beta$. Observando los p-valores, se observa además que estos son mucho mayores que en \hyperref[cod:2]{Listing \ref{cod:2}}, llegando incluso a no rechazar la hipótesis nula para $\beta_2$, es decir, esta variable no sería significativa en el estudio. Por último, llama la atención el $R^2$, que es mucho menor que el de la regresión original, por lo tanto, en estudios de regresión lineal en los que se nos proporcionan los datos podríamos detectar puntos de influencia en función del $R^2$.
+
+\subsubsection{La multicolinealidad}
+La multicolinealidad es la alta correlación entre dos variables explicativas de una regresión. Para simular una regresión en la que existe multicolinealidad podemos definir que una de las variables sea igual a otra más unos residuos random de manera que obtengamos una correlación alta. En el caso de estudio se definió:
+\begin{equation*}
+    x_{2.2} = 2x_1 + N(0,1)
+\end{equation*}
 
 \end{document}
