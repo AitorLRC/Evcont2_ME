@@ -59,24 +59,22 @@ summary(reg3)
 #Vamos a suponer multicolienalidad entre x1 y x2
 set.seed(16); x2.2 <- 2*x1 + rnorm(n, mean = 0, sd = 1) #Defino x2 como x1 más una variable aleatoria
 cor(x1, x2.2) #Veo que la correlación es alta, por lo tanto, hay multicolinealidad
-
-y.2 <- beta0 + beta1*x1 + beta2*x2.2 + beta3*x3 + residuales
 #Hacemos la regresión para este caso
-reg <- lm(y.2~x1+x2.2+x3)
-summary(reg)
+reg4 <- lm(y~x1+x2.2+x3)
+summary(reg4)
 
 
 #Especificación inadecuada del modelo
 #Una posible causa de la especificación inadecuada del modelo puede se devida a la omisión de regresores relevante
-reg4 <- lm(y~x1+x2)  #Quitamos la tercera que tenía un p-valor muy pequeño
-summary(reg4)  #Vemos que los p aumentan y el valor de beta varía
+reg5 <- lm(y~x1+x2)  #Quitamos la tercera que tenía un p-valor muy pequeño
+summary(reg5)  #Vemos que los p aumentan y el valor de beta varía
 
-reg5 <- lm(y~x2+x3)
-summary(reg5)
-
-#Pruebo a quitar valores de x2
 reg6 <- lm(y~x2+x3)
 summary(reg6)
+
+#Pruebo a quitar valores de x2
+reg7 <- lm(y~x1+x3)
+summary(reg7)
 
 
 
@@ -90,7 +88,7 @@ summary(reg6)
 n <- 30 #Número de muestras
 
 #Por la forma que tiene la función logit sabemos que la probabilidad abarca el rango [0,1] cuando logit se encuentra en el intervalo [-5,5]
-set.seed(10);logit <- rnorm(n, mean = 0, sd = 3)
+set.seed(10);k <- rnorm(n, mean = 0, sd = 3)
 
 #Defino los coeficientes de la regresión
 beta0 <- 5; beta1 <- 3; beta2 <- 2; beta3 <- 3
@@ -99,21 +97,22 @@ beta0 <- 5; beta1 <- 3; beta2 <- 2; beta3 <- 3
 set.seed(15); x1 <- sample(c("s", "n"), n, replace=TRUE)
 
 #Para definir la variable cuantítativa hago uso del logit: logit = beta0 + beta*x1s + beta*x1n + beta3*x2
-x2<- (logit - beta0 - beta1*as.numeric(x1=='s') - beta2*as.numeric(x1=='n'))/beta3
+x2<- (k - beta0 - beta1*as.numeric(x1=='s') - beta2*as.numeric(x1=='n'))/beta3
 
 #Los residuales se comportan como una distribución normal con media cero y desviación típica sigma
 sigma <- 0.8
 residuales <- round(rnorm(n, 0, sigma), 1) #Los redondeo a un decimal
 
 #Calculo el logit
-logit_aleatorio <- beta0 + beta1*as.numeric(x1=='s') + beta2*as.numeric(x1=='n') + beta3*x2 + residuales
+k_aleatorio <- beta0 + beta1*as.numeric(x1=='s') + beta2*as.numeric(x1=='n') + beta3*x2 + residuales
 
 #Calulo la probabilidad
-p <- 1/(1+exp(-logit_aleatorio))
+p <- 1/(1+exp(-k_aleatorio))
 
 #Simulo las variables respuesta según una distribución binomial dependiente de x
 y <- rbinom(n, 1, prob = p )
 
 #Estimo el modelo a partir de los parámetros simulados
-modelo <- glm(y~x1+x2, family = binomial)
+modelo <- glm(y~x1+x2, family = binomial(logit))
 summary(modelo)
+exp(coef(modelo))
