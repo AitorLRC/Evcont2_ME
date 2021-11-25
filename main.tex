@@ -220,7 +220,7 @@ Residual standard error: 24.47 on 36 degrees of freedom
 Multiple R-squared:  0.4178,	Adjusted R-squared:  0.3693 
 F-statistic: 8.612 on 3 and 36 DF,  p-value: 0.0001931
 \end{lstlisting}
-En este caso se observa que el efecto es mucho mayor ya que, para empezar, existe más error en el cálculo de los coeficientes de regresión $\beta$. Observando los p-valores, se observa además que estos son mucho mayores que en \hyperref[cod:2]{Listing \ref{cod:2}}, llegando incluso a no rechazar la hipótesis nula para $\beta_2$, es decir, esta variable no sería significativa en el estudio. Por último, llama la atención el $R^2$, que es mucho menor que el de la regresión original, por lo tanto, en estudios de regresión lineal en los que se nos proporcionan los datos podríamos detectar puntos de influencia en función del $R^2$.
+En este caso se observa que el efecto es mucho mayor ya que, para empezar, existe más error en el cálculo de los coeficientes de regresión $\beta$. Observando los p-valores, se observa además que estos son mucho mayores que en \hyperref[cod:2]{Listing \ref{cod:2}}, llegando incluso a no rechazar la hipótesis nula para $\beta_2$, es decir, esta variable no sería significativa en el estudio. Se observa, además, que la desviación estándar de los predictores es mucho mayor que la obtenida en el modelo inicial. Por último, llama la atención el $R^2$, que es mucho menor que el de la regresión original, por lo tanto, en estudios de regresión lineal en los que se nos proporcionan los datos podríamos detectar puntos de influencia en función del $R^2$.
 
 \subsubsection{La multicolinealidad}
 La multicolinealidad es la alta correlación entre dos variables explicativas de una regresión. Para simular una regresión en la que existe multicolinealidad podemos definir que una de las variables sea igual a otra más unos residuos random de manera que obtengamos una correlación alta. En el caso de estudio se definió:
@@ -251,4 +251,61 @@ Residual standard error: 24.7 on 36 degrees of freedom
 Multiple R-squared:  0.407,	Adjusted R-squared:  0.3576 
 F-statistic: 8.235 on 3 and 36 DF,  p-value: 0.000266
 \end{lstlisting}
+En este caso se observa que tanto el coeficiente independiente de correlación como los asociados a las dos variables correladas varían bastante con respecta a las definidas inicialmente. Con respecto a los p-valores, estos son mucho mayores que los obtenidos en \hyperref[cod:2]{Listing \ref{cod:2}}, llegando incluso a no rechazar la hipótesis de que $\beta_1$ o $\beta_2$ puedan ser nulas. Al igual que en el caso anterior, se observa un valor muy bajo para $R^2$ que, junto a los altos errores estándar y a los p-valores, nos podrían indicar la existencia de multicolinealidad.
+
+\subsubsection{Una especificación inadecuada del modelo}
+Una especificación inadecuada del modelo puede venir dada por la omisión de regresores relevantes en el modelo. Teniendo en cuenta lo obtenido en \hyperref[cod:2]{Listing \ref{cod:2}} podemos plantear que pasaría si quitamos una de las variables con un p-valor menor, por ejemplo $x_3$:
+
+\begin{lstlisting}[language=R, caption = Especificación inadecuada del modelo, label =cod:6]
+> summary(reg5)  
+
+Call:
+lm(formula = y ~ x1 + x2)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-43.287  -8.914  -1.812  11.128  33.322 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)   11.261      2.756   4.086 0.000226 ***
+x1             8.047      3.133   2.568 0.014388 *  
+x2            22.185      2.634   8.422 3.97e-10 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 16.8 on 37 degrees of freedom
+Multiple R-squared:  0.7178,	Adjusted R-squared:  0.7025 
+F-statistic: 47.05 on 2 and 37 DF,  p-value: 6.852e-11
+\end{lstlisting}
+En este caso, la estimación de los coeficientes de regresión es similar a la propuesta inicialmente pero se observa que el error estándar es mayor que el obtenido en \hyperref[cod:2]{Listing \ref{cod:2}}. Comparando los p-valores, en todos los casos se rechaza la hipótesis nula, es decir, todas las variables son significativas, pero estos son mayores que los obtenidos en el modelo inicial.
+
+A continuación comprobamos que ocurre si la especificación inadecuada se produce por la falta de la variable que definimos con un mayor coeficiente de regresión, es decir, si quitamos del análisis $x_2$.
+
+\begin{lstlisting}[language=R, caption = Especificación inadecuada del modelo, label =cod:7]
+> summary(reg7)
+
+Call:
+lm(formula = y ~ x1 + x3)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-40.85 -16.45  -5.28  12.88  64.17 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)   15.869      3.886   4.084 0.000228 ***
+x1            12.133      4.450   2.726 0.009728 ** 
+x3            13.430      3.551   3.782 0.000551 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 24.37 on 37 degrees of freedom
+Multiple R-squared:  0.4062,	Adjusted R-squared:  0.3741 
+F-statistic: 12.66 on 2 and 37 DF,  p-value: 6.483e-05
+\end{lstlisting}
+En este caso se observa que el $R^2$ es mucho mejor que en los casos anteriores, demostrando así la especificación inadecuada del modelo.
+
+\subsection{Simula un conjunto de datos a partir de un modelo de regresión logística}
+
 \end{document}
