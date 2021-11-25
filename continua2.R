@@ -3,9 +3,9 @@
 #Primer ejercicio
 #################
 
-n <- 40 #Número de muestras
+n <- 40 #Tamaño de muestra al menos de 3 observaciones
 
-set.seed(1); x1 <- rnorm(n)
+set.seed(1); x1 <- rnorm(n) #Genero la variable aleatoria x1
 #Para generar la segunda variable con correlación de poisson >0.1 creo la función
 corr.data<- function(x1, rho){
   set.seed(7);xr <- rnorm(length(x1)) #Genero una variable random con distribución normal
@@ -14,8 +14,9 @@ corr.data<- function(x1, rho){
   
   return(xcorr)
 }
-x2 <- corr.data(x1, 0.2)
-set.seed(2); x3 <- rnorm(n)
+x2 <- corr.data(x1, 0.2) #Genero la variable aleatoria x2 con correlación 0.1 con respecto a x1
+set.seed(2); x3 <- rnorm(n) #Genero la variable aleatoria x3
+
 cor(x1,x2)
 
 #Defino los coeficientes de la regresión
@@ -36,15 +37,17 @@ summary(reg1) #Vemos que en todos los casos las betas son parecidas a las que he
 #Si se añade un punto de influencia
 #Al punto con el beta menor
 x1.1 <- x1
-x1.1[5] <- x1[5]+15
+x1.1[5] <- x1[5]+20
+
 plot(x1.1, y)
 #Hacemos la regresión para este caso
-reg2 <- lm(y~x1.1+x2+x3)
+reg2 <- lm(y.1~x1.1+x2+x3)
 summary(reg2)
 
 #Al punto con el beta mayor
 x2.1 <- x2
 x2.1[5] <- x2[5]+20
+
 plot(x2.1, y)
 #Hacemos la regresión para este caso
 reg3 <- lm(y~x1+x2.1+x3)
@@ -56,8 +59,10 @@ summary(reg3)
 #Vamos a suponer multicolienalidad entre x1 y x2
 set.seed(16); x2.2 <- 2*x1 + rnorm(n, mean = 0, sd = 1) #Defino x2 como x1 más una variable aleatoria
 cor(x1, x2.2) #Veo que la correlación es alta, por lo tanto, hay multicolinealidad
+
+y.2 <- beta0 + beta1*x1 + beta2*x2.2 + beta3*x3 + residuales
 #Hacemos la regresión para este caso
-reg <- lm(y~x1+x2.2+x3)
+reg <- lm(y.2~x1+x2.2+x3)
 summary(reg)
 
 
