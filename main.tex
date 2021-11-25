@@ -307,5 +307,58 @@ F-statistic: 12.66 on 2 and 37 DF,  p-value: 6.483e-05
 En este caso se observa que el $R^2$ es mucho mejor que en los casos anteriores, demostrando así la especificación inadecuada del modelo.
 
 \subsection{Simula un conjunto de datos a partir de un modelo de regresión logística}
+Para empezar, conocemos que la probabilidad para una regresión logística tiene la forma:
+\begin{equation}
+    p_i = \frac{1}{1+e^{-(\beta_0 + \beta_1 x_{1,i}+\beta_{2s} x_{2s,i}+\beta_{2n}x_{2n,i})}}
+\end{equation}
+de manera que, para acotar el programa, nos interesa tomar un rango de valores pequeño que asegure que $p_i$ abarque todo el intervalo $[0,1]$. Si definimos:
+\begin{equation}
+    K_i = \beta_0 + \beta_1 x_{1,i}+\beta_{2s} x_{2s,i}+\beta_{2n}x_{2n,i}
+\end{equation}
+Obtenemos que, para que la probabilidad abarque todo ese intervalo, los $K_i$ se deben encontrar en el intervalo $[-5,5]$.
+
+
+
+A continuación, podemos definir una variable cualitativa que tome, de manera aleatoria, el valor \textit{s} o el valor \textit{n}. Y, para definir la variable cuantitativa, podemos despejar de la expresión de $K_i$ de manera que obtenemos:
+\begin{equation}
+    x_{1,i} = \frac{K_i - \beta_{2s} x_{2s,i}-\beta_{2n}x_{2n,i}}{\beta_1}
+\end{equation}
+En el caso de estudio, los valores de $\beta$ elegidos son:
+\begin{equation*}
+    \beta_0 = 5 \ \ \ ;\ \ \ \beta_{1s} = 3 \ \ \ ;\ \ \ \beta_{1n} = 2 \ \ \ ;\ \ \  \beta_{2} = 3
+\end{equation*}
+
+A continuación, se generan unos nuevos valores $K'$ a partir de estas variables y se le suma una componente aleatoria con una distribución $N(0,0\text{.}8)$. 
+Finalmente, para obtener la variable respuesta, se calculan nuevas probabilidades aleatorias a partir de este nuevo $K'$ y se simula la asignación de $Y=1$ según una distribución binomial dependiente de $x$. En R esta simulación se consigue haciendo uso de la función \textit{rbinom()}.
+
+Teniendo el conjunto de datos simulados, podemos hacer una regresión logística en R de manera que obtenemos:
+\begin{lstlisting}[language=R, caption = Regresión logística, label =cod:8]
+> modelo <- glm(y~x1+x2, family = binomial)
+> summary(modelo)
+
+Call:
+glm(formula = y ~ x1 + x2, family = binomial)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-1.3836  -0.8201  -0.3268   0.5984   2.0879  
+
+Coefficients:
+            Estimate Std. Error z value Pr(>|z|)  
+(Intercept)   4.8485     2.0162   2.405   0.0162 *
+x1s           0.4319     1.0133   0.426   0.6699  
+x2            2.0268     0.7885   2.570   0.0102 *
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 40.381  on 29  degrees of freedom
+Residual deviance: 28.835  on 27  degrees of freedom
+AIC: 34.835
+
+Number of Fisher Scoring iterations: 5
+\end{lstlisting}
+En este caso observamos que, salvo para el caso en el que $x_1 = \textit{s}$ en el que es mucho menor que el indicado. Además, para este caso, se obtiene un p-valor de $0.67$, es decir, este coeficiente podría ser nulo $67$ de cada $100$ veces.
 
 \end{document}
